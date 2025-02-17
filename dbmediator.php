@@ -40,7 +40,7 @@ function ProcessRequest()
     }
 }
 
-DissableWebAccess();
+// DissableWebAccess();
 ProcessRequest();
 
 # Convert our Godot json string into a dictionary:
@@ -151,18 +151,18 @@ function GetScore($conn)
 }
 function AddScore($conn, $json)
 {
-    $UserID = $json['UserID'];
-    $Chapter = $json['Chapter'];
+    $ScoreID = $json['ScoreID'];
+    $PlayerID = $json['PlayerID'];
+    $ChapterID = $json['ChapterID'];
     $Score = $json['Score'];
-    $Type = $json['Type'];
 
-    $query = "INSERT INTO `scoring` (UserID, Chapter, Score, Type)
-                VALUES ('$UserID', '$Chapter', '$Score', '$Type') 
+    $query = "INSERT INTO `scoring` (ScoreID, PlayerID, ChapterID, Score)
+                VALUES ('$ScoreID', '$PlayerID', '$ChapterID', '$Score') 
                 ON DUPLICATE KEY UPDATE 
-                    UserID = VALUES(UserID), 
-                    Chapter = VALUES(Chapter), 
-                    Score = VALUES(Score), 
-                    Type = VALUES(Type)";
+                    ScoreID = VALUES(ScoreID),
+                    PlayerID = VALUES(PlayerID), 
+                    ChapterID = VALUES(ChapterID), 
+                    Score = VALUES(Score)";
 
     mysqli_query($conn, $query);
 }
@@ -227,15 +227,15 @@ function GetPlayerData($conn)
 }
 function AddPlayerData($conn, $json)
 {
-    $UserID = $json['UserID'];
+    $PlayerID = $json['PlayerID'];
     $PlayerSavePoint = $json['PlayerSavePoint'];
     $ChapterNumber = $json['ChapterNumber'];
     $LessonNumber = $json['LessonNumber'];
 
-    $query = "INSERT INTO `playerdata` (UserID, PlayerSavePoint, ChapterNumber, LessonNumber)
-        VALUES ('$UserID', '$PlayerSavePoint', '$ChapterNumber', '$LessonNumber') 
+    $query = "INSERT INTO `playerdata` (PlayerID, PlayerSavePoint, ChapterNumber, LessonNumber)
+        VALUES ('$PlayerID', '$PlayerSavePoint', '$ChapterNumber', '$LessonNumber') 
         ON DUPLICATE KEY UPDATE 
-            UserID = VALUES(UserID), 
+            PlayerID = VALUES(PlayerID), 
             PlayerSavePoint = VALUES(PlayerSavePoint), 
             ChapterNumber = VALUES(ChapterNumber), 
             LessonNumber = VALUES(LessonNumber)";
