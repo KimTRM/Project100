@@ -65,7 +65,32 @@ switch ($_REQUEST['command']) {
         DeleteStudentAccount($conn, $json);
         die;
 
-    // ----------------- Scoring -----------------
+        // ----------------- Lesson -----------------
+    case "get_lesson":
+        GetLesson($conn);
+        die;
+    case "add_lesson":
+        AddLesson($conn, $json);
+        die;
+    case "delete_lesson":
+        DeleteLesson($conn, $json);
+        die;
+
+        // ----------------- Quiz -----------------
+    case "get_quiz":
+        GetAllQuiz($conn);
+        die;
+    case "get_specific_quiz":
+        GetSpecificQuiz($conn, $json);
+        die;
+    case "add_quiz":
+        AddQuiz($conn, $json);
+        die;
+    case "delete_quiz":
+        DeleteQuiz($conn, $json);
+        die;
+
+        // ----------------- Scoring -----------------
     case "get_score":
         GetScore($conn);
         die;
@@ -76,18 +101,7 @@ switch ($_REQUEST['command']) {
         DeleteScore($conn, $json);
         die;
 
-    // ----------------- Quiz -----------------
-    case "get_quiz":
-        GetQuiz($conn);
-        die;
-    case "add_quiz":
-        AddQuiz($conn, $json);
-        die;
-    case "delete_quiz":
-        DeleteQuiz($conn, $json);
-        die;
-
-    // ----------------- Player Data -----------------
+        // ----------------- Player Data -----------------
     case "get_player_data":
         GetPlayerData($conn);
         die;
@@ -139,6 +153,90 @@ function DeleteStudentAccount($conn, $json)
     mysqli_query($conn, $query);
 }
 
+// ----------------- Lesson -----------------
+function GetLesson($conn)
+{
+    $query = "SELECT * FROM `lessons`";
+    $result = mysqli_query($conn, $query);
+
+    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    echo json_encode($data);
+}
+function AddLesson($conn, $json)
+{
+    $LessonID = $json['LessonID'];
+    $LessonTitle = $json['LessonTitle'];
+    
+    $query = "INSERT INTO `lessons` (LessonID, LessonTitle) 
+                VALUES ('$LessonID', '$LessonTitle') 
+                ON DUPLICATE KEY UPDATE 
+                    LessonID = VALUES(LessonID), 
+                    LessonTitle = VALUES(LessonTitle)";
+
+    mysqli_query($conn, $query);
+}
+function DeleteLesson($conn, $json)
+{
+    $LessonID = $json['LessonID'];
+    $query = "DELETE FROM `lessons` WHERE LessonID = '$LessonID'";
+
+    mysqli_query($conn, $query);
+}
+
+// ----------------- Quiz -----------------
+function GetAllQuiz($conn)
+{
+    $query = "SELECT * FROM `quiz`";
+    $result = mysqli_query(mysql: $conn, query: $query);
+
+    $data = mysqli_fetch_all(result: $result, mode: MYSQLI_ASSOC);
+
+    echo json_encode($data);
+}
+function GetSpecificQuiz($conn, $json)
+{
+    $QuizCategory = $json['QuizCategory'];
+    $query = "SELECT * FROM `quiz` WHERE QuizCategory = '$QuizCategory'";
+    $result = mysqli_query($conn, $query);
+
+    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    echo json_encode($data);
+}
+function AddQuiz($conn, $json)
+{
+    $ID = $json['ID'];
+    $Question = $json['Question'];
+    $ChoiceA = $json['ChoiceA'];
+    $ChoiceB = $json['ChoiceB'];
+    $ChoiceC = $json['ChoiceC'];
+    $ChoiceD = $json['ChoiceD'];
+    $CorrectAnswer = $json['CorrectAnswer'];
+    $QuizCategory = $json['QuizCategory'];
+
+    $query = "INSERT INTO `quiz` (ID, Question, ChoiceA, ChoiceB, ChoiceC, ChoiceD, CorrectAnswer, QuizCategory)
+        VALUES ('$ID', '$Question', '$ChoiceA', '$ChoiceB', '$ChoiceC', '$ChoiceD', '$CorrectAnswer', '$QuizCategory') 
+        ON DUPLICATE KEY UPDATE 
+            ID = VALUES(ID), 
+            Question = VALUES(Question), 
+            ChoiceA = VALUES(ChoiceA), 
+            ChoiceB = VALUES(ChoiceB), 
+            ChoiceC = VALUES(ChoiceC), 
+            ChoiceD = VALUES(ChoiceD), 
+            CorrectAnswer = VALUES(CorrectAnswer),
+            QuizCategory = VALUES(QuizCategory)";
+
+    mysqli_query($conn, $query);
+}
+function DeleteQuiz($conn, $json)
+{
+    $ID = $json['ID'];
+    $query = "DELETE FROM `quiz` WHERE ID = '$ID'";
+
+    mysqli_query($conn, $query);
+}
+
 // ----------------- Scoring -----------------
 function GetScore($conn)
 {
@@ -170,47 +268,6 @@ function DeleteScore($conn, $json)
 {
     $UserID = $json['UserID'];
     $query = "DELETE FROM `scoring` WHERE UserID = '$UserID'";
-
-    mysqli_query($conn, $query);
-}
-
-// ----------------- Quiz -----------------
-function GetQuiz($conn)
-{
-    $query = "SELECT * FROM `quiz`";
-    $result = mysqli_query(mysql: $conn, query: $query);
-
-    $data = mysqli_fetch_all(result: $result, mode: MYSQLI_ASSOC);
-
-    echo json_encode($data);
-}
-function AddQuiz($conn, $json)
-{
-    $ID = $json['ID'];
-    $Question = $json['Question'];
-    $ChoiceA = $json['ChoiceA'];
-    $ChoiceB = $json['ChoiceB'];
-    $ChoiceC = $json['ChoiceC'];
-    $ChoiceD = $json['ChoiceD'];
-    $CorrectAnswer = $json['CorrectAnswer'];
-
-    $query = "INSERT INTO `quiz` (ID, Question, ChoiceA, ChoiceB, ChoiceC, ChoiceD, CorrectAnswer)
-        VALUES ('$ID', '$Question', '$ChoiceA', '$ChoiceB', '$ChoiceC', '$ChoiceD', '$CorrectAnswer') 
-        ON DUPLICATE KEY UPDATE 
-            ID = VALUES(ID), 
-            Question = VALUES(Question), 
-            ChoiceA = VALUES(ChoiceA), 
-            ChoiceB = VALUES(ChoiceB), 
-            ChoiceC = VALUES(ChoiceC), 
-            ChoiceD = VALUES(ChoiceD), 
-            CorrectAnswer = VALUES(CorrectAnswer)";
-
-    mysqli_query($conn, $query);
-}
-function DeleteQuiz($conn, $json)
-{
-    $ID = $json['ID'];
-    $query = "DELETE FROM `quiz` WHERE ID = '$ID'";
 
     mysqli_query($conn, $query);
 }
