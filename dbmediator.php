@@ -117,7 +117,7 @@ switch ($_REQUEST['command']) {
 //  ----------------- User Account -----------------
 function GetStudentAccount($conn)
 {
-    $query = "SELECT * FROM `user`";
+    $query = "SELECT * FROM `tbuser`";
     $result = mysqli_query($conn, $query);
 
     $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -133,7 +133,7 @@ function AddStudentAccount($conn, $json)
     $Password = $json['Password'];
     $Role = $json['Role'];
 
-    $query = "INSERT INTO `user` (UserID, FirstName, LastName, UserName, Password, Role) 
+    $query = "INSERT INTO `tbuser` (UserID, FirstName, LastName, UserName, Password, Role) 
                 VALUES ('$UserID', '$FirstName', '$LastName', '$UserName', '$Password', '$Role') 
                 ON DUPLICATE KEY UPDATE 
                     UserID = VALUES(UserID), 
@@ -148,7 +148,7 @@ function AddStudentAccount($conn, $json)
 function DeleteStudentAccount($conn, $json)
 {
     $UserID = $json['UserID'];
-    $query = "DELETE FROM `user` WHERE UserID = '$UserID'";
+    $query = "DELETE FROM `tbuser` WHERE UserID = '$UserID'";
 
     mysqli_query($conn, $query);
 }
@@ -156,7 +156,7 @@ function DeleteStudentAccount($conn, $json)
 // ----------------- Lesson -----------------
 function GetLesson($conn)
 {
-    $query = "SELECT * FROM `lessons`";
+    $query = "SELECT * FROM `tblessons`";
     $result = mysqli_query($conn, $query);
 
     $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -168,7 +168,7 @@ function AddLesson($conn, $json)
     $LessonID = $json['LessonID'];
     $LessonTitle = $json['LessonTitle'];
     
-    $query = "INSERT INTO `lessons` (LessonID, LessonTitle) 
+    $query = "INSERT INTO `tblessons` (LessonID, LessonTitle) 
                 VALUES ('$LessonID', '$LessonTitle') 
                 ON DUPLICATE KEY UPDATE 
                     LessonID = VALUES(LessonID), 
@@ -179,7 +179,7 @@ function AddLesson($conn, $json)
 function DeleteLesson($conn, $json)
 {
     $LessonID = $json['LessonID'];
-    $query = "DELETE FROM `lessons` WHERE LessonID = '$LessonID'";
+    $query = "DELETE FROM `tblessons` WHERE LessonID = '$LessonID'";
 
     mysqli_query($conn, $query);
 }
@@ -187,7 +187,7 @@ function DeleteLesson($conn, $json)
 // ----------------- Quiz -----------------
 function GetAllQuiz($conn)
 {
-    $query = "SELECT * FROM `quiz`";
+    $query = "SELECT * FROM `tbquiz`";
     $result = mysqli_query(mysql: $conn, query: $query);
 
     $data = mysqli_fetch_all(result: $result, mode: MYSQLI_ASSOC);
@@ -197,7 +197,7 @@ function GetAllQuiz($conn)
 function GetSpecificQuiz($conn, $json)
 {
     $QuizCategory = $json['QuizCategory'];
-    $query = "SELECT * FROM `quiz` WHERE QuizCategory = '$QuizCategory'";
+    $query = "SELECT * FROM `tbquiz` WHERE QuizCategory = '$QuizCategory'";
     $result = mysqli_query($conn, $query);
 
     $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -215,7 +215,7 @@ function AddQuiz($conn, $json)
     $CorrectAnswer = $json['CorrectAnswer'];
     $QuizCategory = $json['QuizCategory'];
 
-    $query = "INSERT INTO `quiz` (ID, Question, ChoiceA, ChoiceB, ChoiceC, ChoiceD, CorrectAnswer, QuizCategory)
+    $query = "INSERT INTO `tbquiz` (ID, Question, ChoiceA, ChoiceB, ChoiceC, ChoiceD, CorrectAnswer, QuizCategory)
         VALUES ('$ID', '$Question', '$ChoiceA', '$ChoiceB', '$ChoiceC', '$ChoiceD', '$CorrectAnswer', '$QuizCategory') 
         ON DUPLICATE KEY UPDATE 
             ID = VALUES(ID), 
@@ -232,7 +232,7 @@ function AddQuiz($conn, $json)
 function DeleteQuiz($conn, $json)
 {
     $ID = $json['ID'];
-    $query = "DELETE FROM `quiz` WHERE ID = '$ID'";
+    $query = "DELETE FROM `tbquiz` WHERE ID = '$ID'";
 
     mysqli_query($conn, $query);
 }
@@ -240,7 +240,7 @@ function DeleteQuiz($conn, $json)
 // ----------------- Scoring -----------------
 function GetScore($conn)
 {
-    $query = "SELECT * FROM `scoring`";
+    $query = "SELECT * FROM `tbscores`";
     $result = mysqli_query($conn, $query);
 
     $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -254,7 +254,7 @@ function AddScore($conn, $json)
     $ChapterID = $json['ChapterID'];
     $Score = $json['Score'];
 
-    $query = "INSERT INTO `scoring` (ScoreID, PlayerID, ChapterID, Score)
+    $query = "INSERT INTO `tbscores` (ScoreID, PlayerID, ChapterID, Score)
                 VALUES ('$ScoreID', '$PlayerID', '$ChapterID', '$Score') 
                 ON DUPLICATE KEY UPDATE 
                     ScoreID = VALUES(ScoreID),
@@ -267,7 +267,7 @@ function AddScore($conn, $json)
 function DeleteScore($conn, $json)
 {
     $UserID = $json['UserID'];
-    $query = "DELETE FROM `scoring` WHERE UserID = '$UserID'";
+    $query = "DELETE FROM `tbscores` WHERE UserID = '$UserID'";
 
     mysqli_query($conn, $query);
 }
@@ -275,7 +275,7 @@ function DeleteScore($conn, $json)
 // ----------------- Player Data -----------------
 function GetPlayerData($conn)
 {
-    $query = "SELECT * FROM `playerdata`";
+    $query = "SELECT * FROM `tbplayerdata`";
     $result = mysqli_query($conn, $query);
 
     $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -289,7 +289,7 @@ function AddPlayerData($conn, $json)
     $ChapterNumber = $json['ChapterNumber'];
     $LessonNumber = $json['LessonNumber'];
 
-    $query = "INSERT INTO `playerdata` (PlayerID, PlayerSavePoint, ChapterNumber, LessonNumber)
+    $query = "INSERT INTO `tbplayerdata` (PlayerID, PlayerSavePoint, ChapterNumber, LessonNumber)
         VALUES ('$PlayerID', '$PlayerSavePoint', '$ChapterNumber', '$LessonNumber') 
         ON DUPLICATE KEY UPDATE 
             PlayerID = VALUES(PlayerID), 
@@ -302,7 +302,7 @@ function AddPlayerData($conn, $json)
 function DeletePlayerData($conn, $json)
 {
     $UserID = $json['UserID'];
-    $query = "DELETE FROM `playerdata` WHERE UserID = '$UserID'";
+    $query = "DELETE FROM `tbplayerdata` WHERE UserID = '$UserID'";
 
     mysqli_query($conn, $query);
 }
