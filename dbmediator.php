@@ -132,16 +132,18 @@ function AddStudentAccount($conn, $json)
     $UserName = $json['UserName'];
     $Password = $json['Password'];
     $Role = $json['Role'];
+    $Status = $json['Status'];
 
-    $query = "INSERT INTO `tbuser` (UserID, FirstName, LastName, UserName, Password, Role) 
-                VALUES ('$UserID', '$FirstName', '$LastName', '$UserName', '$Password', '$Role') 
+    $query = "INSERT INTO `tbuser` (UserID, FirstName, LastName, UserName, Password, Role, Status) 
+                VALUES ('$UserID', '$FirstName', '$LastName', '$UserName', '$Password', '$Role', '$Status') 
                 ON DUPLICATE KEY UPDATE 
                     UserID = VALUES(UserID), 
                     FirstName = VALUES(FirstName), 
                     LastName = VALUES(LastName), 
                     UserName = VALUES(UserName), 
                     Password = VALUES(Password), 
-                    Role = VALUES(Role)";
+                    Role = VALUES(Role),
+                    Status = VALUES(Status)";
 
     mysqli_query($conn, $query);
 }
@@ -149,7 +151,6 @@ function DeleteStudentAccount($conn, $json)
 {
     $UserID = $json['UserID'];
     $query = "DELETE FROM `tbuser` WHERE UserID = '$UserID'";
-
     mysqli_query($conn, $query);
 }
 
